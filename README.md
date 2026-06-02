@@ -1,1 +1,2 @@
-# beigene-ai-intern-portfolio
+# 百济神州 AI 工程实习生 – 作品集
+药学背景，使用 OpenAI Codex 在两周内完成以下三个与真实业务场景结合的项目。
