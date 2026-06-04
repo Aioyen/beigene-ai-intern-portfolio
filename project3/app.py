@@ -1,9 +1,27 @@
 ﻿import streamlit as st
 import pandas as pd
-import matplotlib.pyplot as plt
 import matplotlib
-matplotlib.rcParams["font.sans-serif"] = ["Microsoft YaHei", "SimHei", "DejaVu Sans"]
-matplotlib.rcParams["axes.unicode_minus"] = False
+import matplotlib.pyplot as plt
+import os, urllib.request
+
+# --- 自动下载中文字体 ---
+def setup_chinese_font():
+    font_dir = os.path.join(os.path.expanduser("~"), ".fonts")
+    font_path = os.path.join(font_dir, "NotoSansSC-Regular.ttf")
+    os.makedirs(font_dir, exist_ok=True)
+    if not os.path.exists(font_path):
+        url = "https://github.com/google/fonts/raw/main/ofl/notosanssc/NotoSansSC%5Bwght%5D.ttf"
+        urllib.request.urlretrieve(url, font_path)
+    for f in matplotlib.font_manager.fontManager.ttflist:
+        if "NotoSansSC" in f.name:
+            matplotlib.rcParams["font.sans-serif"] = [f.name, "DejaVu Sans"]
+            break
+    else:
+        matplotlib.font_manager.fontManager.addfont(font_path)
+        matplotlib.rcParams["font.sans-serif"] = ["Noto Sans SC", "DejaVu Sans"]
+    matplotlib.rcParams["axes.unicode_minus"] = False
+
+setup_chinese_font()
 
 st.set_page_config(page_title="药企数据快速探索工具", layout="wide")
 st.title("💊 药企数据快速探索工具")
@@ -11,19 +29,15 @@ st.title("💊 药企数据快速探索工具")
 uploaded = st.file_uploader("上传 Excel 或 CSV 文件", type=["csv", "xlsx", "xls"])
 
 if uploaded is not None:
-    # 读取文件
     if uploaded.name.endswith(".csv"):
         df = pd.read_csv(uploaded)
     else:
         df = pd.read_excel(uploaded)
 
     st.success(f"已加载 {df.shape[0]} 行 × {df.shape[1]} 列")
-
-    # 显示前 10 行
     st.subheader("📋 数据预览（前 10 行）")
     st.dataframe(df.head(10), use_container_width=True)
 
-    # 数值列下拉菜单
     num_cols = df.select_dtypes(include="number").columns.tolist()
     if len(num_cols) < 2:
         st.warning("至少需要两列数值型数据才能绘制散点图")
