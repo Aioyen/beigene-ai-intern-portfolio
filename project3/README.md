@@ -29,4 +29,4 @@ pip install -r requirements.txt
 streamlit run app.py
 ```
 
-打开 http://localhost:8501 即可使用。
+打开 https://beigene-ai-intern-portfolio-bv3qvff4bsnpspg9puec2b.streamlit.app/ 即可使用。
