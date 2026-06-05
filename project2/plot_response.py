@@ -1,8 +1,5 @@
-﻿import csv
-import matplotlib.pyplot as plt
-import matplotlib
-matplotlib.rcParams["font.sans-serif"] = ["Microsoft YaHei", "SimHei", "DejaVu Sans"]
-matplotlib.rcParams["axes.unicode_minus"] = False
+import csv
+import plotly.graph_objects as go
 from collections import defaultdict
 
 # --- 读取并分组统计 ---
@@ -15,28 +12,44 @@ with open("ehr_data.csv", encoding="utf-8-sig") as f:
         if row["结局"] == "有效":
             drug_stats[drug]["response"] += 1
 
-# --- 计算应答率 ---
-drugs = []
-rates = []
+# --- 计算应答率 + 准备画图数据 ---
+drugs, rates, totals, responses, hover_texts = [], [], [], [], []
 print("药物应答率：")
 for drug, stats in sorted(drug_stats.items()):
     rate = stats["response"] / stats["total"] * 100
     drugs.append(drug)
-    rates.append(rate)
+    rates.append(round(rate, 1))
+    totals.append(stats["total"])
+    responses.append(stats["response"])
+    hover_texts.append(f"有效率: {rate:.1f}%<br>有效: {stats['response']} / 总例数: {stats['total']}")
     print(f"  {drug}: {stats['response']}/{stats['total']} = {rate:.1f}%")
 
-# --- 画柱状图 ---
+# --- 用 Plotly 画柱状图 ---
 colors = ["#4C72B0", "#55A868", "#C44E52"]
-plt.figure(figsize=(8, 5))
-bars = plt.bar(drugs, rates, color=colors, edgecolor="white", linewidth=0.8)
+fig = go.Figure()
 
-for bar, rate in zip(bars, rates):
-    plt.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 0.5,
-             f"{rate:.1f}%", ha="center", fontsize=12, fontweight="bold")
+fig.add_trace(go.Bar(
+    x=drugs,
+    y=rates,
+    marker_color=colors,
+    text=[f"{r}%" for r in rates],
+    textposition="outside",
+    textfont=dict(size=14, family="Microsoft YaHei"),
+    hovertext=hover_texts,
+    hoverinfo="text",
+    hovertemplate="%{hovertext}<extra></extra>",
+))
 
-plt.ylabel("Response Rate (%)", fontsize=12)
-plt.title("Drug Response Rate by Group", fontsize=14, fontweight="bold")
-plt.ylim(0, max(rates) * 1.3)
-plt.tight_layout()
-plt.savefig("response_rate.png", dpi=150)
-print("\nDone -> response_rate.png")
+fig.update_layout(
+    title=dict(text="药物分组应答率", font=dict(size=18, family="Microsoft YaHei")),
+    xaxis=dict(title="药物名称", titlefont=dict(size=14, family="Microsoft YaHei"),
+               tickfont=dict(size=13, family="Microsoft YaHei")),
+    yaxis=dict(title="应答率 (%)", titlefont=dict(size=14),
+               range=[0, max(rates) * 1.3]),
+    plot_bgcolor="white",
+    width=700,
+    height=500,
+)
+
+fig.write_html("response_rate.html")
+print("\nDone -> response_rate.html")
