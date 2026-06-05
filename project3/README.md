@@ -8,7 +8,7 @@
 
 ## 🚀 功能
 
-- 📂 上传 Excel (.xlsx/.xls) 或 CSV 文件
+- 📂 上传 Excel (`.xlsx`/`.xls`) 或 CSV 文件
 - 📋 自动显示数据前 10 行预览
 - 📊 下拉菜单选择任意两个数值列，一键绘制散点图
 - 🌐 纯浏览器操作，无需本地安装 Python
@@ -21,12 +21,12 @@
 
 ## 🏃 快速开始
 
-`ash
+```bash
 # 安装依赖
 pip install -r requirements.txt
 
 # 启动应用
 streamlit run app.py
-`
+```
 
 打开 http://localhost:8501 即可使用。
