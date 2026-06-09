@@ -13,14 +13,6 @@
 - 📊 散点图 — 下拉菜单选两个数值列，一键绘图
 - 🖱️ 交互悬停 — Plotly 图表，鼠标悬停显示精确数值
 
-## 快速开始
-
-```bash
-pip install -r requirements.txt
-streamlit run app.py
-```
-
-打开 http://localhost:8501。
 
 ## Demo
 
