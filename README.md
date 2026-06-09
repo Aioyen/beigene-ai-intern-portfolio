@@ -4,10 +4,10 @@
 
 | 项目 | 说明 | 文档 |
 |---|---|---|
-| 临床试验方案信息提取器 | 从 Word 文档自动提取注册号、日期、终点 | [README](project1/readme.md) |
-| 药物应答率分析 | 按药物分组计算应答率，Plotly 柱状图 | [README](project2/readme.md) |
-| 数据快速探索工具 | Streamlit Web 应用，上传即画散点图 | [README](project3/readme.md) |
-| 轻量 RAG 检索 | LangChain 向量检索 + 模拟 LLM 问答 | [README](project4/readme.md) |
+| 临床试验方案信息提取器 | 从 Word 文档自动提取注册号、日期、终点 | [README](project1/README.md) |
+| 药物应答率分析 | 按药物分组计算应答率，Plotly 柱状图 | [README](project2/README.md) |
+| 数据快速探索工具 | Streamlit Web 应用，上传即画散点图 | [README](project3/README.md) |
+| 轻量 RAG 检索 | LangChain 向量检索 + 模拟 LLM 问答 | [README](project4/README.md) |
 
 🌐 在线体验：[数据快速探索工具](https://beigene-ai-intern-portfolio-bv3qvff4bsnpspg9puec2b.streamlit.app/)
 
